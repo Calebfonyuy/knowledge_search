@@ -1,0 +1,260 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>KnowledgeSearch</title>
+	
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/all.css' %}">
+	<link rel="stylesheet" href="{% static 'css/copy.css' %}">
+
+</head>
+
+<body>
+	 
+	<div class="container-fluid" id ="main-search-zone">
+		<div class="row">
+		  <div class="col-lg-9 col-md-5 col-sm-5 col-xs-5">
+			<img src="ressources\img\Capture.PNG" class="img-responsive" width="100px" alt="Logo">
+		  </div>
+		  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 m-auto p-auto">
+					<select class="w-100 btn btn-primary" name="language">
+					  <option value="en">EN</option>
+					  <option value="fr">FR</option>
+				  </select>
+				</div>
+		</div>
+		
+		<div class="col-12">
+		  <hr>
+		</div>
+		
+			<h2 class="text-primary" id="nom">KnowledgeSearch</h2>
+			<form class="form col-lg-12 col-md-10 col-xs-8 row m-0" action="#" method="post" onsubmit="return mainSearch()">
+				<div class="col-12 m-auto p-auto row">
+					<div class = "col-7 m-auto p-auto row">
+						<div class="input-group mb-3" id="rechercher">
+							<input type="text" class="form-control" id="search-text0" placeholder="Cherchez ici" required>
+							<div class="input-group-append">
+								<button class="btn btn-outline-primary" type="submit" id="rond"><i class="fa fa-search" ></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class = "row" >
+				<div class="col-lg-8 col-md-8 m-auto">
+				<div class="quick-box p-5" id="pastSearch">
+				<h6 class="text-secondary" id="pastSearch0">Génie Informatique</h6>
+				</div>
+				<div class="quick-box p-5" id="pastSearch">
+				<h6 class="text-secondary" id="pastSearch0">G&eacute;nie M&eacute;canique</h6>
+				</div>
+				<div class="quick-box p-5" id="pastSearch">
+				<h6 class="text-secondary" id="pastSearch0">Génie Industriel</h6>
+				</div>
+				<div class="quick-box p-5" id="pastSearch">
+				<h6 class="text-secondary" id="pastSearch0">Génie Electrique</h6>
+				</div>
+				<div class="quick-box p-5" id="pastSearch">
+				<h6 class="text-secondary" id="pastSearch0">Génie Telecommunication</h6>
+				</div>
+				<div class="quick-box p-5" id="pastSearch">
+				<h6 class="text-secondary" id="pastSearch0">Genie Civil</h6>
+				</div>
+				<div class="quick-box p-5" id="pastSearch">
+				<h6 class="text-secondary" id="pastSearch0">Génie Informatique</h6>
+				</div>
+				<div class="quick-box p-5" id="pastSearch">
+				<h6 class="text-secondary" id="pastSearch0">Arts Numeriques</h6>
+				</div>
+				<div class="quick-box p-5" id="pastSearch">
+				<h6 class="text-secondary" id="pastSearch0">Humanites Numeriques</h6>
+				</div>
+			</div>
+			</div>
+			
+	</div>
+	<div class="container-fluid" id="result-view" hidden="hidden">
+			<div class="row" id="ok">
+					<div class="col-lg-2">
+						<h2 >KnowledgeSearch</h2>
+					</div>
+					<div class="offset-col-1 col-lg-7 ">
+						<form class="row" action="#" method="post" onsubmit="initPageCount(); return searchItem()" id="submitable-form">
+									<div class="input-group mb-3" >
+								<input type="text" class="form-control"  id="search-text" placeholder="Cherchez ici" id="devant_rond" required>
+								<div class="input-group-append">
+									<button class="btn btn-outline-primary" type="submit" id="search-btn"><i class="fa fa-search" ></i></button>
+								</div>
+							</div>		
+						</form>
+					</div>
+					<div class="col-lg-1 ">
+						<select class="w-100 btn btn-primary" name="language">
+							<option value="en">EN</option>
+							<option value="fr">FR</option>
+						</select>
+					</div>
+			</div>
+		<div class="col-12">
+			<hr>
+		</div>
+		<div class="row">
+			<div class="col-lg-2 col-md-2 d-none d-lg-block">
+				<ul class="list-group" id="sidebar">
+					<li class="list-group-item">Shorcut Item</li>
+					<li class="list-group-item">Shorcut Item</li>
+					<li class="list-group-item">Shorcut Item</li>
+				</ul>
+			</div>
+
+			<div class="col-lg-10 m-auto border row">
+				<div class="col-12" id="articles">
+
+				</div>
+				<div class="col-12 row" id="navigation">
+					<button type="button" class="btn btn-secondary m-2 col-5 w-100" name="precedant" id="precedant">Pr&eacute;c&eacute;dant</button>
+					<button type="button" class="btn btn-secondary m-2 col-5 w-100" name="suivant" id="suivant">Suivant</button>
+				</div>
+			</div>
+
+			
+
+			<div class="col-lg-2 col-md-2 d-block d-md-none">
+				<ul class="list-group" id="sidebar">
+					<li class="list-group-item">Shorcut Item</li>
+					<li class="list-group-item">Shorcut Item</li>
+					<li class="list-group-item">Shorcut Item</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+		
+	  
+	  
+	  
+
+    <script src="js/jquery-3.4.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		let page_count = 1;
+		$('select[name=language]').change(function () {
+			$('select[name=language]').val($(this).val());
+		});
+
+		function mainSearch() {
+			initPageCount();
+			$('#main-search-zone').attr('hidden','hidden');
+			$('#result-view').removeAttr('hidden');
+
+			$('#search-text').val($('#search-text0').val());
+			$('#submitable-form').submit();
+
+			return false;
+		}
+
+		function initPageCount() {
+			page_count =1;
+		}
+
+		$('#precedant').click(function () {
+			if (page_count==1) {
+				return;
+			}
+			page_count -=10;
+			searchItem();
+		});
+
+		$('#suivant').click(function () {
+			page_count +=10;
+			searchItem();
+		});
+
+		function searchItem() {
+			if ($('#search-text').val()=='') {
+				return;
+			}
+			var url = "https://www.googleapis.com/customsearch/v1?key=AIzaSyCw0EESxZunzAw7MdViYwVbD51WBhC_B-I&cx=008459376045476562504%3Ai56qn30nuh7";
+			var question = $("#search-text").val();
+
+			$.ajax({
+				url: url,
+				method: "GET",
+				data: {
+					q: question,
+					alt: "JSON",
+					lr: "lang_"+$('select[name=language]').val(),
+					start: page_count
+				},
+				success: function (data) {
+					console.log(data);
+					formatResults(data);
+				},
+				error: function (data) {
+					responseText = JSON.parse(data.responseText);
+					let code = responseText.error.code;
+					let domain = responseText.error.errors[0].domain;
+					let reason = responseText.error.errors[0].reason;
+					let message = responseText.error.errors[0].message;
+					$('#articles').html('<b>'+code+'</b><br>'+message+': '+domain+'<br>'+reason);
+				}
+			});
+
+			return false;
+		}
+
+		function formatResults(results) {
+			let html_value = '';
+			for (i=0; i<results.items.length; i++) {
+				const result = results.items[i];
+				html_value += '<a href="'+result.link+'" class="text-dark"><div class="article">'+
+					'<div class="title text-info">'+
+						result.htmlTitle+
+					'</div>'+
+					'<div class="link text-sucess">'+
+						result.link+
+					'</div>'+
+					'<div class="caption">'+
+						result.htmlSnippet+
+					'</div>'+
+				'</div></a><div style="height: 10px;">&nbsp;</div>'
+			}
+			$('#articles').html(html_value);
+		}
+
+		function getHTML(results){
+            let html_value = '';
+            var taille=0;
+			for (i=0; i<results.items.length; i++) {
+                const result = results.items[i];
+                if(result.link.endsWith("/") || (result.link.endsWith(".html"))){
+                    taille=taille+1;
+                    html_value += '<a href="'+result.link+'" class="text-dark"><div class="article">'+
+					'<div class="title">'+
+						result.htmlTitle+
+					'</div>'+
+					'<div class="link">'+
+						result.link+
+					'</div>'+
+					'<div class="caption">'+
+                        result.htmlSnippet+
+                    '</div>'+
+				'</div></a><div style="height: 10px;">&nbsp;</div>'
+                }
+            }
+            $('#taille').html(taille);
+            $('#articles').html(html_value);
+        }
+
+	</script>
+</body>
+
+</html>
