@@ -22,6 +22,6 @@ urlpatterns = [
     path('', sviews.index, name="index"),
     path('search', sviews.search, name="search"),
     path('words', rviews.word_proposal, name="word_proposal"),
-    path('result', sviews.search, name="result_page"),
+    path('next_page', sviews.paginate, name="result_page"),
     path('admin/', admin.site.urls),
 ]
