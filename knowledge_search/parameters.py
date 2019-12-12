@@ -1,5 +1,9 @@
 THRESHOLD = 10
 
-API_KEY = 'AIzaSyCtUW7Zw3ywOGt_xdWl9dVrx8EuWpQqVzI'
+API_KEY = 'AIzaSyAkYuCBKAgKDDPW7oveuDg5g3aqjdf4euU'
 
 CX = '008459376045476562504:i56qn30nuh7'
+
+HOME_PAGE = 'home'
+
+RESULT_PAGE = 'result'

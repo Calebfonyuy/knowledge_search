@@ -1,6 +1,8 @@
-from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+import json
 from .models import Search, Scrapper, Searcher, SearchManager
+from knowledge_search import parameters
 
 # Create your views here.
 
@@ -10,9 +12,13 @@ def index(request):
 def search(request):
     word = request.GET['word']
     lang = request.GET['lang']
+    source = request.GET['source']
+    #Check request source as search results are not being returned to home page directly.
+    if source == parameters.HOME_PAGE:
+        context = {'search_word': word, 'lang': lang}
+        return render(request, 'results.html', context) #render result page
+    #Prepare and render search results
     manager = SearchManager(word, lang)
-    manager.executeSearch()
-    return HttpResponse(manager.results)
-
-def word_proposal(request):
-    return HttpResponse(['word1', 'word2', 'word3'])
+    if not manager.has_results():
+        manager.executeSearch()
+    return JsonResponse(list(manager.get_results()), safe=False)

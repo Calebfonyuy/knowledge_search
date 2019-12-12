@@ -16,8 +16,8 @@ class ResultAdmin(admin.ModelAdmin):
     search_fields = ['title', 'url']
     
 
-admin.site.Register(BlockedSite)
+admin.site.register(BlockedSite)
 
-admin.site.Register(Search, SearchAdmin)
+admin.site.register(Search, SearchAdmin)
 
-admin.site.Register(Result)
+admin.site.register(Result)
