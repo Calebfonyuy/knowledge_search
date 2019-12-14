@@ -5,11 +5,13 @@ from django.http import JsonResponse
 import threading
 import json
 
-
+#Application Entry point. It simply returns the home page.
 def index(request):
     return render(request,'acceuil.html')
 
+#This function manages incoming searches
 def search(request):
+    #Get all search parameters
     word = request.GET['word']
     lang = request.GET['lang']
     source = request.GET['source']
@@ -20,23 +22,24 @@ def search(request):
     #Prepare and render search results
     manager = SearchManager(word, lang)
     if manager.result_size()<10:
-        manager.executeSearch()
+        manager.executeSearch() #Search for new results for the search term
     else:
-        if not manager.search.extended_search:
-            thread = threading.Thread(manager.execute_extended_search())
+        if not manager.search.extended_search: #Exhaust the possible number of searches available for a free cgse search
+            thread = threading.Thread(manager.execute_extended_search()) # Create a thread to run in background on server
             thread.start()
-    return JsonResponse(list(manager.get_results()), safe=False)
+    return JsonResponse(list(manager.get_results()), safe=False) #Return results as JSON object
 
+#Handling of pagination requests
 def paginate(request):
     word = request.GET['word']
     lang = request.GET['lang']
-    size = request.GET['size']
+    size = request.GET['size']#Get the page index
     manager = SearchManager(word, lang)
     result_size = manager.result_size()
     if result_size > int(size) and (result_size- int(size))>=10:
-        return JsonResponse(list(manager.get_results_with_offset(size)),safe=False)
+        return JsonResponse(list(manager.get_results_with_offset(size)),safe=False)#Return JSON object of results
     if not manager.search.extended_search:
         manager.execute_extended_search()
-        return JsonResponse(list(manager.get_results_with_offset(size)),safe=False)
+        return JsonResponse(list(manager.get_results_with_offset(size)),safe=False)#Return JSON object of results
     else:
-        return JsonResponse(list(manager.unsaved_results()),safe=False)
+        return JsonResponse(list(manager.unsaved_results()),safe=False) # Return every other unsaved result
