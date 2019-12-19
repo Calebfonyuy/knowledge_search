@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,191 +9,299 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>KnowledgeSearch</title>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_result.css' %}">
+
+    <style media="screen">
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            background-image: url("{% static 'images/image1.jpg' %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+			background-attachment: fixed;
+            
+        }
+
+        .suivant{
+            visibility: hidden;
+        }
+
+        #nom{
+            opacity: 1;
+            color: blue; 
+            font-size: 40px;
+            padding: 3px;
+            border: 1px solid;
+            border-radius: 20px;
+            box-shadow: 3px 3px teal;
+            text-shadow:cyan;
+            background-color:cyan;
+
+        }
+        .cv{
+            position:absolute;
+            border:5px solid rgba(255,255,255,0.1);
+            box-shadow:inset 0 0 100px #4162a9;
+            transform:translateZ(0);
+        }
+        .page-item{
+            padding: 3px;
+            border: 1px solid;
+            border-radius: 10px;
+        }
+        
+        #articles{
+            visibility: hidden;
+            width: 1000px;
+            height: 450px;
+            position: static;
+            overflow: scroll;
+        }
+        .article {
+            margin: 3px;
+            padding: 2px;
+            border: 1px solid;
+            border-radius: 10px;
+            box-shadow: 3px 3px teal;
+            background-color:rgb(194, 194, 194);
+        }
+
+        .form-control{
+            border-radius: 15px;
+        }
+
+        .article .title {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .article .link {
+            font-weight: lighter;
+            color: #00F;
+        }
+
+        .article .caption {
+            font-size: 0.9em;
+        }
+		a:hover{
+			text-decoration: none;
+		}
+    </style>
 
 </head>
 
 <body>
-	<div class="container-fluid" id ="main-search-zone">
-		<div class="row">
-			<div class="col-lg-9 col-md-9 text-primary">
-		        <h1 id="logo">KnowledgeSearch</h1>
-			</div>
-			<div class="col-lg-2 col-md-2 col-sm-8 col-xs-8 m-auto">
-                <select class="w-100 btn btn-primary" name="language">
-                  <option value="en">EN</option>
-                  <option value="fr">FR</option>
-              </select>
-            </div>
-		</div>
-		<div class="col-12">
-			<hr>
-		</div>
-        <form class="form col-12 row m-0" action="#" method="post" onsubmit="return mainSearch()">
-			<div class="col-12 m-auto p-auto row">
-	            <div class="col-lg-8 col-md-8 m-auto">
-	                <input type="text" name="search-text0" id="search-text0" class="form-control text-center font-weight-bold border border-primary" required>
-	            </div>
-	            <div class="col-lg-5 col-md-5 m-auto p-3">
-	                <button id="search-btn" class="btn btn-primary w-100">Rechercher</button>
-	            </div>
-				<div class="col-lg-8 col-md-8 m-auto">
-		            <div class="quick-box p-5 bg-light">
-						Genie Informatique
-					</div>
-					<div class="quick-box p-5 bg-light">
-						G&eacute;nie M&eacute;canique
-					</div>
-					<div class="quick-box p-5 bg-light">
-						Genie Industriel
-					</div>
-					<div class="quick-box p-5 bg-light">
-						Genie Electrique
-					</div>
-					<div class="quick-box p-5 bg-light">
-						Genie Telecommunication
-					</div>
-					<div class="quick-box p-5 bg-light">
-						Genie Civil
-					</div>
-					<div class="quick-box p-5 bg-light">
-						Genie Informatique
-					</div>
-					<div class="quick-box p-5 bg-light">
-						Arts Numeriques
-					</div>
-					<div class="quick-box p-5 bg-light">
-						Humanites Numeriques
-					</div>
-				</div>
-	        </div>
-        </form>
-    </div>
 
-
-    <div class="container-fluid" id="result-view" hidden="hidden">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-9 col-md-9">&nbsp;</div>
-            <div class="col-lg-2 col-md-2">
-                <select class="form-control btn-outline-info" name="language">
-                  <option value="en">EN</option>
-                  <option value="fr">FR</option>
-              </select>
-            </div>
-            <div class="col-12 mt-2 row">
-                <div class="col-lg-3 col-md-3">
-                    <h2 class="logo">KnowledgeSearch</h2>
+            <div class="col-12">&nbsp;</div>
+            <div class="col-12 row">
+                <div class="d-flex justify-content-center col-10">
+                    <p id="nom" class="row justify-content-center align-self-center">KnowledgeSearch</p>
                 </div>
-				<form class="col-lg-9 col-md-9 col-sm-12 row" action="#" method="post" onsubmit="initPageCount(); return searchItem()" id="submitable-form">
-	                <div class="col-7 search-input">
-	                    <input type="text" name="search-text" id="search-text" class="form-control" placeholder="Chercher ici">
-	                </div>
-	                <div class="col-5 search-action">
-	                    <button class="btn btn-outline-info w-100" id="search-btn">Rechercher</button>
-	                </div>
-				</form>
+                
+                <div class="col-1">
+                <select class="form-control btn-outline-info" name="language" id="language">
+                  <option value="en">EN</option>
+                  <option value="fr">FR</option>
+                </select>
+                </div>
             </div>
+            <div class="col-12 row">
+                
+                
+                <!--
+            <form class="form col-12 row m-0" action="#" method="post" onsubmit=" return mainSearch()">
+                <div class="col-12 m-auto p-auto row">
+                    <div class = "col-8 m-auto p-auto row">
+                     <div class="input-group mb-3" id="rechercher">
+                       <input type="text" class="form-control" id="search-text0" placeholder="Cherchez ici">
+                       <div class="input-group-append">
+                         <button class="btn btn-outline-primary" type="submit" id="rond"><fa-icon [icon]="faSearch"></fa-icon></button>
+                       </div>
+                     </div>
+                    </div>
+                    
+                </div>
+            </form>
+                <div class="col-3">
+                    <h2 id="logo">KnowledgeSearch</h2>
+                </div>-->
+				<form class="col-12 row" action="#" method="post" onsubmit="return searchItem()">
+	                <div class="col-10 search-input">
+                        <input type="text" name="search-text" id="search-text" class="form-control" placeholder="Chercher ici">
+                        <div class="input-group-append">
+                             <button class="btn btn-outline-primary" type="submit" id="rond"><fa-icon [icon]="faSearch"></fa-icon></button>
+                           </div>
+	                </div>
+	                <div class="col-2 search-action">
+                        <button class="btn btn-outline-info w-100" id="search-btn">rechercher</fa-icon></button>
+                    </div>
+                </form>
+            </div>
+            <div class="col 12s">
+                <hr>
+            </div>
+            
+            <!--<div class="col-12">
+                <nav class="col-lg-6 col-md-6 m-auto">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a href="#web" class="nav-link active" role="tab" data-toggle="tab">
+                                Web <span id="taille"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>-->
         </div>
-		<div class="col-12">
-			<hr>
-		</div>
+        <div><canvas class="cv"></canvas></div>
         <div class="row">
-            <div class="col-lg-2 col-md-2 d-none d-lg-block">
-                <ul class="list-group" id="sidebar">
-                    <li class="list-group-item">Shorcut Item</li>
-                    <li class="list-group-item">Shorcut Item</li>
-                    <li class="list-group-item">Shorcut Item</li>
-                </ul>
+            <div class="col-lg-8 m-auto border" id="articles">
+            
+
             </div>
 
-            <div class="col-lg-7 m-auto border row">
-				<div class="col-12" id="articles">
-
-				</div>
-				<div class="col-12 row" id="navigation">
-					<button type="button" class="btn btn-secondary m-2 col-5 w-100" name="precedant" id="precedant">Pr&eacute;c&eacute;dant</button>
-					<button type="button" class="btn btn-secondary m-2 col-5 w-100" name="suivant" id="suivant">Suivant</button>
-				</div>
-            </div>
-
-            <div class="col-lg-2">
-                <ul class="list-group" id="websites">
-                    <li class="list-group-item">Shorcut site</li>
-                    <li class="list-group-item">Shorcut site</li>
-                    <li class="list-group-item">Shorcut site</li>
-                </ul>
-            </div>
-
-            <div class="col-lg-2 col-md-2 d-block d-md-none">
-                <ul class="list-group" id="sidebar">
-                    <li class="list-group-item">Shorcut Item</li>
-                    <li class="list-group-item">Shorcut Item</li>
-                    <li class="list-group-item">Shorcut Item</li>
-                </ul>
-            </div>
         </div>
+        <div class="col-12">
+                <div class="d-flex justify-content-center col-10">
+                    <div>
+                        <ul class="pagination pagination-lg" class="suivant">
+                            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+        
+        
     </div>
 
-    <script src="js/jquery-3.4.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="{% static 'js/jquery-3.4.1.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
-	<script type="text/javascript">
-		let search_word = "{{ search_word }}";
-		let language = "{{ lang }}";
-		console.log(search_word);
-		console.log(language);
-		let page_count = 1;
-		$('select[name=language]').change(function () {
-			$('select[name=language]').val($(this).val());
-		});
+    <script type="text/javascript">
+    // Definition of constants needed for result requests. NE PAS MODIFIER
+        const search_url = "/search"; // parameters: word, lang, source=result
+        const words_url ="/words"; // parameters: word, lang
+        const paginate_url = "/next_page"; // parameters: word, lang, size
 
-		function mainSearch() {
-			initPageCount();
-			$('#main-search-zone').attr('hidden','hidden');
-			$('#result-view').removeAttr('hidden');
 
-			$('#search-text').val($('#search-text0').val());
-			$('#submitable-form').submit();
+        var   canvas = document.querySelector('canvas');
+        var ctx = canvas.getContext('2d'),
+        particles = [],
+        patriclesNum = 500,
+                w = 500,
+                h = 500,
+            colors = ['#f35d4f','#f36849','#c0d988','#6ddaf1','#f1e85b'];
+        
+        canvas.width = 500;
+        canvas.height = 500;
+        canvas.style.left = (window.innerWidth - 500)/2+'px';
 
-			return false;
-		}
+        if(window.innerHeight>500)
+        canvas.style.top = (window.innerHeight - 500)/2+'px';
+        
+        function Factory(){  
+        this.x =  Math.round( Math.random() * w);
+        this.y =  Math.round( Math.random() * h);
+        this.rad = Math.round( Math.random() * 1) + 1;
+        this.rgba = colors[ Math.round( Math.random() * 3) ];
+        this.vx = Math.round( Math.random() * 3) - 1.5;
+        this.vy = Math.round( Math.random() * 3) - 1.5;
+        }
+        
+        function draw(){
+        ctx.clearRect(0, 0, w, h);
+        ctx.globalCompositeOperation = 'lighter';
+        for(var i = 0;i < patriclesNum; i++){
+            var temp = particles[i];
+            var factor = 1;
+            
+            for(var j = 0; j<patriclesNum; j++){
+            
+            var temp2 = particles[j];
+            ctx.linewidth = 0.5;
+            
+            if(temp.rgba == temp2.rgba && findDistance(temp, temp2)<50){
+                ctx.strokeStyle = temp.rgba;
+                ctx.beginPath();
+                ctx.moveTo(temp.x, temp.y);
+                ctx.lineTo(temp2.x, temp2.y);
+                ctx.stroke();
+                factor++;
+            }
+            }
+            
+            
+            ctx.fillStyle = temp.rgba;
+            ctx.strokeStyle = temp.rgba;
+            
+            ctx.beginPath();
+            ctx.arc(temp.x, temp.y, temp.rad*factor, 0, Math.PI*2, true);
+            ctx.fill();
+            ctx.closePath();
+            
+            ctx.beginPath();
+            ctx.arc(temp.x, temp.y, (temp.rad+5)*factor, 0, Math.PI*2, true);
+            ctx.stroke();
+            ctx.closePath();
+            
 
-		function initPageCount() {
-			page_count =1;
-		}
+            temp.x += temp.vx;
+            temp.y += temp.vy;
+            
+            if(temp.x > w)temp.x = 0;
+            if(temp.x < 0)temp.x = w;
+            if(temp.y > h)temp.y = 0;
+            if(temp.y < 0)temp.y = h;
+        }
+        }
 
-		$('#precedant').click(function () {
-			if (page_count==1) {
-				return;
-			}
-			page_count -=10;
-			searchItem();
-		});
+        function findDistance(p1,p2){  
+        return Math.sqrt( Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2) );
+        }
 
-		$('#suivant').click(function () {
-			page_count +=10;
-			searchItem();
-		});
+        window.requestAnimFrame = (function(){
+        return  window.requestAnimationFrame       ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame    ||
+                function( callback ){
+                    window.setTimeout(callback, 1000 / 60);
+                };
+        })();
+
+        (function init(){
+        for(var i = 0; i < patriclesNum; i++){
+            particles.push(new Factory);
+        }
+        })();
+
+        (function loop(){
+        draw();
+        requestAnimFrame(loop);
+        })();
 
 		function searchItem() {
 			if ($('#search-text').val()=='') {
 				return;
 			}
-			var url = "https://www.googleapis.com/customsearch/v1?key=AIzaSyCw0EESxZunzAw7MdViYwVbD51WBhC_B-I&cx=008459376045476562504%3Ai56qn30nuh7";
-			var question = $("#search-text").val();
+			var url = "https://www.googleapis.com/customsearch/v1?key=AIzaSyANOYyLjy2Yh_6tqmEFWF2ANAeNjYekOrg&cx=008459376045476562504%3Ai56qn30nuh7&q="+$("#search-text").val()+"&alt=JSON";
 
 			$.ajax({
 				url: url,
 				method: "GET",
-				data: {
-					q: question,
-					alt: "JSON",
-					lr: "lang_"+$('select[name=language]').val(),
-					start: page_count
-				},
 				success: function (data) {
-					console.log(data);
+					console.log(data.items);
 					formatResults(data);
 				},
 				error: function (data) {
@@ -224,9 +334,8 @@
 				'</div></a><div style="height: 10px;">&nbsp;</div>'
 			}
 			$('#articles').html(html_value);
-		}
-
-		function getHTML(results){
+        }
+        function getHTML(results){
             let html_value = '';
             var taille=0;
 			for (i=0; i<results.items.length; i++) {
@@ -244,12 +353,27 @@
                         result.htmlSnippet+
                     '</div>'+
 				'</div></a><div style="height: 10px;">&nbsp;</div>'
-                }
+                }	
             }
             $('#taille').html(taille);
             $('#articles').html(html_value);
         }
-
+        var last='';
+        function localStore(){
+            if (typeof(Storage) !== "undefined") {
+                
+                localStorage.setItem("lastname", "Smith");
+                document.getElementById("result").innerHTML = localStorage.getItem("lastname");
+            } else {
+            // Sorry! No Web Storage support..
+            }
+        }
+        $(function ()
+{
+    $('#btnSearch').show().click(function () { Search($("#txtSearchTerm").val(),0);});
+    $('#lnkPrev').click(function () { Search($("#txtSearchTerm").val(),-1); });
+    $('#lnkNext').click(function () { Search($("#txtSearchTerm").val(),1);  });
+});
 	</script>
 </body>
 

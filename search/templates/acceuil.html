@@ -10,7 +10,7 @@
     <title>KnowledgeSearch</title>
 	
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style_index.css' %}">
 	<link rel="stylesheet" href="{% static 'css/all.css' %}">
 	<link rel="stylesheet" href="{% static 'css/copy.css' %}">
 
@@ -36,11 +36,13 @@
 		</div>
 		
 			<h2 class="text-primary" id="nom">KnowledgeSearch</h2>
-			<form class="form col-lg-12 col-md-10 col-xs-8 row m-0" action="#" method="post" onsubmit="return mainSearch()">
+			<form class="form col-lg-12 col-md-10 col-xs-8 row m-0" action="/search" method="get" onsubmit="return mainSearch()">
+				<input type="hidden" name="source" value="home">
+				<input type="hidden" name="lang" value="lang_en">
 				<div class="col-12 m-auto p-auto row">
 					<div class = "col-7 m-auto p-auto row">
 						<div class="input-group mb-3" id="rechercher">
-							<input type="text" class="form-control" id="search-text0" placeholder="Cherchez ici" required>
+							<input type="text" class="form-control" id="search-text0" placeholder="Cherchez ici"  name="word" required>
 							<div class="input-group-append">
 								<button class="btn btn-outline-primary" type="submit" id="rond"><i class="fa fa-search" ></i></button>
 							</div>
