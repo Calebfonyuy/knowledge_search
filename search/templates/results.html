@@ -194,7 +194,11 @@
         const search_url = "/search"; // parameters: word, lang, source=result
         const words_url ="/words"; // parameters: word, lang
         const paginate_url = "/next_page"; // parameters: word, lang, size
+        const source = "result";
 
+    //Initiating of search values
+        var search_term = "{{  }}";
+        var language = "{{  }}";
 
         var   canvas = document.querySelector('canvas');
         var ctx = canvas.getContext('2d'),

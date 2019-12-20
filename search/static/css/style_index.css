@@ -5,16 +5,18 @@ body {
 }
 
 h2{
- margin:3em 10px 1em 0;
+ margin:auto;
  text-align: center;
 }
+
 #main-search-zone {
   /*background-image: radial-gradient(#03224c, #7f7f7f);*/
   background-image: url("referencement-web.jpg");
-  /*background-repeat: repeat;*/
+  background-repeat: repeat;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  height: 100%;
 }
 #test{
   box-shadow: 1px 1px 1px 1px gray;
@@ -39,30 +41,37 @@ h2{
   border-radius: 4px;
   border: 1px solid #eee;
   background-color: #fafafa;
-  /*height: 40px;
-  width: 200px;
-  margin: 0 8px 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.2s ease-in-out;
-  line-height: 24px;*/
+  
 }
 #rond{
  width: 40px; 
  padding: 3px;
- border-radius: 0px 20px 20px 0px;
+ border-radius: 0px 20px 20px 0px
 }
 
 #rechercher{
- border-radius:50px;
- margin:1em 5px 2em 0;
+  border-radius:50px;
+  margin:3em 2em 2em 2em;
+  /*height: 30px;*/
+ }
+
+#rechercher:hover{
+  box-shadow: 1px -1px 1px 1px #CCC;
+
 }
+#titre1{
+  font-size: 18pt;
+}
+
+#search-text:hover{
+  box-shadow: 1px -1px 1px 1px #CCC;
+}
+ 
+
 #search-text0{
   background-color: #eeeeee; 
   border-radius: 20px 0px 0px 20px;
+  border-color: #349feb;
 }
 #pastSearch{
    background-color: #eeeeee;
@@ -97,7 +106,21 @@ h2{
   font-weight: lighter;
   color: #54a156;
 }
-
+#prop
+{
+  z-index: 500;
+	visibility:hidden;
+	position:absolute;
+	background-color:#EDEEEE;
+	height:auto;
+	border:rgb(16, 16, 59) 1px solid;
+	background-color:#EDEEEE;
+	color:black;
+	font-size:18px;
+	margin-top:40px;
+	padding:5px;
+	cursor:pointer
+}
 .article .caption {
   font-size: 0.9em;
 }
@@ -113,6 +136,28 @@ a:hover{
   text-overflow: ellipsis;
 }
 
+#ok{
+  padding:3em 10px 1em 0;
+}
+#search-btn{
+  width: 40px; 
+  padding: 3px;
+  border-radius: 0px 20px 20px 0px;
+}
+#search-text{
+  background-color: white; 
+  border-radius: 20px 0px 0px 20px;
+}
+
+
+#result-view {
+  background-color: white;
+  background-repeat: repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  height: 100%;
+}
 
 @media (min-width: 768px && max-width: 1050px ) {
   .quick-box{
