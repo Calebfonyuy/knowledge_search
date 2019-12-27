@@ -26,6 +26,13 @@ class Search(models.Model):
         
     def __str__(self):
         return self.search_term
+    
+    def to_json(self):
+        json_form = {}
+        json_form['word'] = self.search_term;
+        json_form['lang'] = self.lang;
+        return json_form;
+        
 
 
 #Class represented each search result.

@@ -9,6 +9,14 @@ import json
 def index(request):
     return render(request,'acceuil.html')
 
+#Most frequently searched words
+def frequent(request):
+    searches = Search.objects.all().order_by('-frequency')[0:9]
+    results = list()
+    for search in searches:
+        results.append(search.to_json());
+    return JsonResponse(results, safe=False)
+
 #This function manages incoming searches
 def search(request):
     #Get all search parameters
