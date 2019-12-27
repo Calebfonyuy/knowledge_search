@@ -20,37 +20,50 @@
         <div class="row">
             <div class="col-12">&nbsp;</div>
             <div class="col-12 row">
-                <div class="d-flex justify-content-center col-10">
-                    <p id="nom" class="row justify-content-center align-self-center">KnowledgeSearch</p>
+                <!--<div class="d-flex justify-content-center col-10">
+                    <p id="nom" class="row justify-content-center align-self-center">knowledges</p>
+                </div>-->
+                <div class="col-12 row">
+                    <div class="col-1"></div>
+                    <div class="col-3"><span id="nom">knowledgeSearch</span></div>
+                    <div class="col-7"></div>
+                    <div class="col-1">
+                        <select class="form-control btn-outline-info" name="language" id="language">
+                          <option value="en">EN</option>
+                          <option value="fr">FR</option>
+                        </select>
+                    </div>
                 </div>
                 
-                <div class="col-1">
-                <select class="form-control btn-outline-info" name="language" id="language">
-                  <option value="en">EN</option>
-                  <option value="fr">FR</option>
-                </select>
-                </div>
+                
             </div>
+            <div class="col-12">&nbsp;</div>
             <div class="col-12 row">
-				<form class="col-12 row" action="#" method="post" onsubmit="return searchItem()">
-	                <div class="col-10 search-input">
-                        <input type="text" name="search-text" id="search-text" class="form-control" placeholder="Chercher ici">
-                        <div class="input-group-append">
-                             <button class="btn btn-outline-primary" type="submit" id="rond"><fa-icon [icon]="faSearch"></fa-icon></button>
-                           </div>
-	                </div>
-	                <div class="col-2 search-action">
-                        <button class="btn btn-outline-info w-100" id="search-btn">rechercher</fa-icon></button>
-                    </div>
-                </form>
+                <div class="col-2"></div>
+                <div class="col-10">
+                    <form class="col-1O row" action="#" method="post" onsubmit="return searchItem()">
+                        
+                        <div class="col-8 search-input">
+                            <input type="text" name="search-text" id="search-text" class="form-control" placeholder="Chercher ici">
+                            <div class="input-group-append">
+                                 <button class="btn btn-outline-primary" type="submit" id="rond"><fa-icon [icon]="faSearch"></fa-icon></button>
+                               </div>
+                        </div>
+                        <div class="col-2 search-action">
+                            <button class="btn btn-outline-info w-100" id="search-btn">rechercher</fa-icon></button>
+                        </div>
+                    </form>
+                </div>
+                
             </div>
-            <div class="col 12s">
+            
+            <div class="col 12">
                 <hr>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-8 m-auto border bg-light" id="articles">
-                {% lorem 10 %}
+            <div class="col-lg-8 m-auto border" id="articles">
+                
             </div>
         </div>
         <div class="col-12">

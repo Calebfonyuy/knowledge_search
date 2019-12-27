@@ -39,13 +39,20 @@ body {
     border: 1px solid;
     border-radius: 10px;
 }
+.title{
+    padding-bottom: 10px;
+}
+.link{
+    padding-bottom: 5px;
+}
+.caption{
+    /*color: #fff;*/
+}
 
 #articles{
     visibility: hidden;
-    width: 1000px;
-    height: 450px;
-    position: static;
-    overflow: scroll;
+    
+    /*overflow: scroll;*/
 }
 .article {
     margin: 3px;
@@ -54,6 +61,7 @@ body {
     border-radius: 10px;
     box-shadow: 3px 3px teal;
     background-color:rgb(194, 194, 194);
+    padding: 10px;
 }
 
 .form-control{
