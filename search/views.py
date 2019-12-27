@@ -1,13 +1,21 @@
 from django.shortcuts import render, redirect
 from .models import Search, Scrapper, Searcher, SearchManager
 from knowledge_search import parameters
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import threading
 import json
 
 #Application Entry point. It simply returns the home page.
 def index(request):
     return render(request,'acceuil.html')
+
+#Most frequently searched words
+def frequent(request):
+    searches = Search.objects.all().order_by('-frequency')[0:9]
+    results = list()
+    for search in searches:
+        results.append(search.to_json());
+    return JsonResponse(results, safe=False)
 
 #This function manages incoming searches
 def search(request):
@@ -17,7 +25,7 @@ def search(request):
     source = request.GET['source']
     #Check request source as search results are not being returned to home page directly.
     if source == parameters.HOME_PAGE:
-        context = {'search_word': word, 'lang': lang}
+        context = {'search_term': word, 'lang': lang}
         return render(request, 'results.html', context) #render result page
     #Prepare and render search results
     manager = SearchManager(word, lang)
