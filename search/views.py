@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Search, Scrapper, Searcher, SearchManager
 from knowledge_search import parameters
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import threading
 import json
 
@@ -17,7 +17,7 @@ def search(request):
     source = request.GET['source']
     #Check request source as search results are not being returned to home page directly.
     if source == parameters.HOME_PAGE:
-        context = {'search_word': word, 'lang': lang}
+        context = {'search_term': word, 'lang': lang}
         return render(request, 'results.html', context) #render result page
     #Prepare and render search results
     manager = SearchManager(word, lang)
