@@ -22,15 +22,26 @@ function rech_associe()
 				console.log(data.responseText)
 			}		
 		})
+	}else{
+		document.getElementById("prop").style.visibility="hidden";
 	}
 	return ;
 }
 
+//afficher les recherches associées
 function affiche(chaine){
 	if(chaine!=[]){
 		document.getElementById("prop").style.visibility="visible";
-		for(var i;i<chaine.length;i++){
-			document.getElementById("prop").innerHTML += "<div class='flux' onClick='choix(\"" + chaine[i] + "\")'>"+chaine[i] + "</div>"; 
+		let html =''
+		for(let i=0;i<chaine.length;i++){
+			html += "<div class='flux' onClick='choix(\"" + chaine[i] + "\")'>"+chaine[i] + "</div>"; 
 		}
+		$('#prop').html(html);
+	}
+	if(chaine==[]){
+		document.getElementById("prop").style.visibility="hidden";
 	}
 }
+
+
+

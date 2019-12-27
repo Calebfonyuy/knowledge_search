@@ -26,7 +26,8 @@ SECRET_KEY = '7d@7s*^kq@2712!tkm5-2n4eio8017&f$z-1)a+6y^wyrwd*fq'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '192.168.1.100'
+    '192.168.1.100',
+    '127.0.0.1'
 ]
 
 
@@ -83,7 +84,7 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'NAME': 'knowledge_search',
         'USER': 'root',
-        'PASSWORD': 'kitiwum2@BUI'
+        'PASSWORD': ''
     }
 }
 

@@ -34,22 +34,23 @@
 			<div>
 				<button class="btn btn-outline-primary" id="fond_ecran" onclick="changer()" >
 					<span class="text-primary fa fa-edit"></span>
+					
 				</button>
 				
 				<h2 class="text-primary" id="nom">KnowledgeSearch</h2>
-				<form class="form col-lg-12 col-md-10 row m-0" action="/search" method="get" onsubmit="return updateSearchLanguage()">
+				<form class="form m-0"  action="/search" method="get" id="soumet" onsubmit="return updateSearchLanguage()">
 					<input type="hidden" name="source" value="home">
 					<input type="hidden" name="lang" value="" id="lang_sub">
-					<div class="col-12 m-auto p-auto row">
+					<div class="col-lg-12 m-auto p-auto row">
 						<div class = "col-lg-7 col-md-7 m-auto p-auto row">
 							<div class="input-group mb-3" id="rechercher">
-								<input type="text" class="form-control" name="word" id="search-text0" placeholder="Cherchez ici"  onkeyup="rech_associe()" autocomplete="off" required>
-								<div class="input-group-append">
+								<input type="text" class="col-xs-12 col-sm-12 form-control" name="word" id="search-text0" placeholder="Cherchez ici"  onkeyup="rech_associe()" autocomplete="off" required>
+								<div class=" input-group-append">
 									<button class="btn btn-outline-primary" type="reset">
 										<i class="fa fa-backspace"></i>
 									</button>
 								</div>
-								<div class="input-group-append">
+								<div class=" input-group-append">
 									<button class="btn btn-outline-primary" type="submit" id="rond">
 										<i class="fa fa-align-justify" ></i>
 									</button>
@@ -61,34 +62,8 @@
 				</form>
 				<div class = "row" id="pastSearchs">
 					<div class="col-lg-8 col-md-8 m-auto">
-					<div class="quick-box p-5" id="pastSearch">
-					<h6 class="text-secondary" id="pastSearch0">Génie Informatique</h6>
+						
 					</div>
-					<div class="quick-box p-5" id="pastSearch">
-					<h6 class="text-secondary" id="pastSearch0">G&eacute;nie M&eacute;canique</h6>
-					</div>
-					<div class="quick-box p-5" id="pastSearch">
-					<h6 class="text-secondary" id="pastSearch0">Génie Industriel</h6>
-					</div>
-					<div class="quick-box p-5" id="pastSearch">
-					<h6 class="text-secondary" id="pastSearch0">Génie Electrique</h6>
-					</div>
-					<div class="quick-box p-5" id="pastSearch">
-					<h6 class="text-secondary" id="pastSearch0">Génie Telecommunication</h6>
-					</div>
-					<div class="quick-box p-5" id="pastSearch">
-					<h6 class="text-secondary" id="pastSearch0">Genie Civil</h6>
-					</div>
-					<div class="quick-box p-5" id="pastSearch">
-					<h6 class="text-secondary" id="pastSearch0">Génie Informatique</h6>
-					</div>
-					<div class="quick-box p-5" id="pastSearch">
-					<h6 class="text-secondary" id="pastSearch0">Arts Numeriques</h6>
-					</div>
-					<div class="quick-box p-5" id="pastSearch">
-					<h6 class="text-secondary" id="pastSearch0">Humanites Numeriques</h6>
-					</div>
-				</div>
 				</div>
 			</div>
 	</div>
@@ -100,7 +75,37 @@
 	<script language="Javascript" src="{% static 'js/mem_cherche.js' %}"></script>
 
 	<script type="text/javascript">
-		//méthodes de la partie recherche
+		//méthodes des 9 recherches les plus fréquentes
+		$.document.ready(function(){
+			frequently();
+		});
+
+		function frequently() {
+			$.ajax({
+				url: '/frequent',
+				method: "GET",
+				success: function (data) {
+					console.log(data.items);
+					formatResults(data);
+				},
+				error: function (data) {
+				}
+			});
+
+			return false;
+		}
+
+		function formatResults(results) {
+			let html_value = '';
+			for (i=0; i<results.items.length; i++) {
+				const result = results.items[i];
+				const lien = "/search?source=home&lang="+result.lang+"&word="+result.word;
+				html_value += '<a href="'+lien+'" class="quick-box p-5" id="pastSearch" >'+
+					'<h6 class="text-secondary" id="pastSearch0">'+result.word+
+				'</h6></a>'
+			}
+			$('#pastSearchs').html(html_value);
+        }
 
 		//changer de fond d'écran
 		function changer(){
@@ -108,8 +113,9 @@
 			var num = getRandomInt(0,tab.length);
 			
 			var v = 'static/css/'+tab[num];
-			document.getElementById("main-search-zone").style.backgroundImage = "url("+v+")";
+			document.getElementsByTagName("body")[0].style.backgroundImage = "url("+v+")";
 		}
+
 		function getRandomInt(min, max) {
 			min = Math.ceil(min);
 			max = Math.floor(max);
