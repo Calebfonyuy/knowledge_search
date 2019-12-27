@@ -11,8 +11,7 @@
 	
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/style_index.css' %}">
-	<link rel="stylesheet" href="{% static 'css/all.css' %}">
-	<script language="Javascript" src="{% static 'js/mem_cherche.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
 </head>
 
 <body>
@@ -20,7 +19,7 @@
 	<div class="container-fluid" id ="main-search-zone">
 		<div class="row">
 		  <div class="col-lg-9 col-md-5 col-sm-5 col-xs-5">
-			<img src="ressources\img\Capture.PNG" class="img-responsive" width="50px" id="Logo">
+			<img src="{% static 'images\Capture.PNG' %}" class="img-responsive" width="50px" id="Logo">
 		  </div>
 		  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 m-auto p-auto">
 				<select class="w-100 btn btn-primary" name="language" id="lang_select">
@@ -33,21 +32,27 @@
 		<div class="col-12">
 		  <hr>
 			<div>
-				<button class="btn btn-outline-primary" id="fond_ecran" onclick="changer()" ><i class="fas fa-pen" style="color:aquamarine" alt="Choisisez votre fond d'écran d'acceuil"></i></button>
+				<button class="btn btn-outline-primary" id="fond_ecran" onclick="changer()" >
+					<span class="text-primary fa fa-edit"></span>
+				</button>
 				
 				<h2 class="text-primary" id="nom">KnowledgeSearch</h2>
-				<form class="form col-lg-12 col-md-10 col-xs-8 row m-0" action="/search" method="get" onsubmit="return updateSearchLanguage()">
+				<form class="form col-lg-12 col-md-10 row m-0" action="/search" method="get" onsubmit="return updateSearchLanguage()">
 					<input type="hidden" name="source" value="home">
 					<input type="hidden" name="lang" value="" id="lang_sub">
 					<div class="col-12 m-auto p-auto row">
-						<div class = "col-7 m-auto p-auto row">
+						<div class = "col-lg-7 col-md-7 m-auto p-auto row">
 							<div class="input-group mb-3" id="rechercher">
 								<input type="text" class="form-control" name="word" id="search-text0" placeholder="Cherchez ici"  onkeyup="rech_associe()" autocomplete="off" required>
 								<div class="input-group-append">
-									<button class="btn btn-outline-primary" type="reset"><i class="fas fa-backspace"></i></button>
+									<button class="btn btn-outline-primary" type="reset">
+										<i class="fa fa-backspace"></i>
+									</button>
 								</div>
 								<div class="input-group-append">
-									<button class="btn btn-outline-primary" type="submit" id="rond"><i class="fa fa-search" ></i></button>
+									<button class="btn btn-outline-primary" type="submit" id="rond">
+										<i class="fa fa-align-justify" ></i>
+									</button>
 								</div>
 								<div class = "col-11" id="prop"></div>
 							</div>
@@ -89,8 +94,10 @@
 	</div>
 		
 
+	<script src="{% static 'js/fontawesome.min.js' %}"></script>
     <script src="{% static 'js/jquery-3.4.1.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script language="Javascript" src="{% static 'js/mem_cherche.js' %}"></script>
 
 	<script type="text/javascript">
 		//méthodes de la partie recherche
@@ -100,7 +107,7 @@
 			var tab=["2.jpg","3.jpg","4.jpg","fond.jpg","47da7f6f.jpg","513f6c6d.jpg","5399e534.jpg","download.jpg","referencement-web.jpg"];
 			var num = getRandomInt(0,tab.length);
 			
-			var v = tab[num];
+			var v = 'static/css/'+tab[num];
 			document.getElementById("main-search-zone").style.backgroundImage = "url("+v+")";
 		}
 		function getRandomInt(min, max) {
@@ -110,37 +117,10 @@
 		}
 		
 		//saisie prédictive
-		/*function controler_saisie(){
-			var nbMots = ''; var chaine_tab;
-			var nbCar; var saisie = ''; var res = false;
-			var chaine = mots_cles();
-			document.getElementById("prop").innerHTML="";
-			
-			chaine_tab=chaine.split('|');
-			nbMots = chaine_tab.length;
-
-			saisie = document.getElementById("search-text0").value;
-			nbCar = saisie.length;
-			if(nbCar>0){
-				for(var range=1; range< nbMots ; range++){
-					if(chaine_tab[range].length > nbCar -1){
-						if(saisie == chaine_tab[range].substr(0,nbCar)){
-							if(res ==false){
-								res = true;
-								document.getElementById("prop").style.visibility="visible";
-							}
-							document.getElementById("prop").innerHTML += "<div class='flux' onClick='choix(\"" + chaine_tab[range] + "\")'>"+chaine_tab[range] + "</div>"; 
-							document.getElementById("search-text0").style.borderRadius = "initial";
-							document.getElementById("search-text0").style.boxShadow = "none";
-							
-						}
-					}
-				}
-			}
-		}*/
 		function controler_saisie(){
 			var chaine = rech_associe();
 		}
+
 		//valider un choix proposé
 		function choix(valeur){
 			document.getElementById("search-text0").value = valeur;
