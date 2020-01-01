@@ -17,66 +17,56 @@
 <body>
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">&nbsp;</div>
-            <div class="col-12 row">
-                <!--<div class="d-flex justify-content-center col-10">
-                    <p id="nom" class="row justify-content-center align-self-center">knowledges</p>
-                </div>-->
-                <div class="col-12 row">
-                    <div class="col-1"></div>
-                    <div class="col-3"><span id="nom">knowledgeSearch</span></div>
-                    <div class="col-7"></div>
-                    <div class="col-1">
-                        <select class="form-control btn-outline-info" name="language" id="language">
-                          <option value="en">EN</option>
-                          <option value="fr">FR</option>
-                        </select>
-                    </div>
-                </div>
-                
-                
+        <div class="mb-3 row">
+            <div class="col-lg-3 col-md-3 text-info">
+                <span id="nom">KnowledgeSearch</span>
             </div>
-            <div class="col-12">&nbsp;</div>
-            <div class="col-12 row">
-                <div class="col-2"></div>
-                <div class="col-10">
-                    <form class="col-1O row" action="#" method="post" onsubmit="return searchItem()">
-                        
-                        <div class="col-8 search-input">
-                            <input type="text" name="search-text" id="search-text" class="form-control" placeholder="Chercher ici">
-                            <div class="input-group-append">
-                                 <button class="btn btn-outline-primary" type="submit" id="rond"><fa-icon [icon]="faSearch"></fa-icon></button>
-                               </div>
-                        </div>
-                        <div class="col-2 search-action">
-                            <button class="btn btn-outline-info w-100" id="search-btn">rechercher</fa-icon></button>
-                        </div>
-                    </form>
-                </div>
-                
-            </div>
-            
-            <div class="col 12">
-                <hr>
+            <div class="col-lg-2 col-md-2 ml-auto mr-0">
+                <select class="form-control btn-outline-info" name="language" id="language">
+                    <option value="lang_en">EN</option>
+                    <option value="lang_fr">FR</option>
+                </select>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-8 m-auto border" id="articles">
+            <div class="col-11 m-auto">
+                <form class="col-lg-9 col-md-9 m-auto row" action="#" method="get" onsubmit="return searchItem()">
+                    <div class="col-lg-10 col-md-10 search-input">
+                        <input type="text" name="search-text" id="search-text" class="form-control" placeholder="Chercher ici" oninput="rech_associe()" autocomplete="off" required="required">
+                    </div>
+                    <div class="col-lg-2 col-md-2 mt-1 ml-n2 search-action">
+                        <button type="submit" class="btn btn-outline-info w-100" id="search-btn">Rechercher</fa-icon></button>
+                    </div>
+                    <div class = "bg-white col-9 ml-4 mt-n4" id="prop"></div>
+                </form>
+            </div>
+        </div>
+        <div class="mt-3 row">
+            <div class="col-lg-7 m-auto" id="animation">
+                <div>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <h1 class="text-light">Recherche ...</h1>
+            </div>
+            <div class="col-lg-9 m-auto" id="articles" hidden="hidden">
                 
             </div>
         </div>
         <div class="col-12">
-                <div class="d-flex justify-content-center col-10">
-                    <div>
-                        <ul class="pagination pagination-lg" class="suivant">
-                            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                        </ul>
-                    </div>
+                <div class="d-flex justify-content-center col-lg-9 col-md-9 m-auto">
+                    <ul class="pagination" class="suivant">
+                        <li class="page-item page-link p-3 m-1 font-weight-bold" data-offset="-1">&laquo;</li>
+                        <li class="page-item page-link p-3 m-1 font-weight-bold" data-offset="1">1</li>
+                        <li class="page-item page-link p-3 m-1 font-weight-bold" data-offset="2">2</li>
+                        <li class="page-item page-link p-3 m-1 font-weight-bold" data-offset="3">3</li>
+                        <li class="page-item page-link p-3 m-1 font-weight-bold" data-offset="4">4</li>
+                        <li class="page-item page-link p-3 m-1 font-weight-bold" data-offset="5">5</li>
+                        <li class="page-item page-link p-3 m-1 font-weight-bold" data-offset="0">&raquo;</li>
+                    </ul>
                 </div>
         </div>
         
@@ -93,15 +83,28 @@
         const words_url ="/words"; // parameters: word, lang
         const paginate_url = "/next_page"; // parameters: word, lang, size
         const source = "result";
+        const page_size = 10;
 
     //Initiating of search values
         var search_term = "{{ search_term }}";
+        $('#search-text').val("{{ search_term }}");
         var language = "{{ lang }}";
+        $('#language').val("{{ lang }}");
+        var result_count = 0;
+        var page_count = 0;
 
         $(document).ready(function (){
             performSearch();
         });
 //======================================================================================================
+
+        function searchItem(){
+            search_term = $('#search-text').val();
+            language = $('#language').val();
+            performSearch();
+            return false;
+        }
+
         function performSearch() {
 			$.ajax({
                 url: search_url,
@@ -109,22 +112,55 @@
                 data: {
                     word: search_term,
                     lang: language,
-                    source: 'result'
+                    source: source
+                },
+                beforeSend: function (){
+                    $('#animation').removeAttr('hidden');
+                    $('#articles, .pagination').attr('hidden','hidden');
                 },
                 success: function (data){
+                    result_count = data.length;
+                    current_page = 1;
                     formatResults(data);
+                    $('#articles, .pagination').removeAttr('hidden');
+                    $('#animation').attr('hidden','hidden');
                 },
                 error: function (data){
                     console.log(data.responseText);
                 }
             });
 		}
+
+        function requestResultPage(size){
+            console.log(size);
+            $.ajax({
+                url: paginate_url,
+                method: 'GET',
+                data: {
+                    word: search_term,
+                    lang: language,
+                    size: size
+                },
+                beforeSend: function (){
+                    $('#animation').removeAttr('hidden');
+                    $('#articles, .pagination').attr('hidden','hidden');
+                },
+                success: function (data){
+                    formatResults(data);
+                    $('#articles, .pagination').removeAttr('hidden');
+                    $('#animation').attr('hidden','hidden');
+                },
+                error: function (data){
+                    console.log(data.responseText);
+                }
+            });
+        }
         
 		function formatResults(results) {
 			let html_value = '';
 			for (i=0; i<results.length; i++) {
 				const result = results[i];
-				html_value += '<a href="'+result.link+'" class="text-dark"><div class="article">'+
+				html_value += '<a href="'+result.url+'" class="text-dark"><div class="article">'+
 					'<div class="title">'+
 						result.title+
 					'</div>'+
@@ -139,6 +175,87 @@
 			$('#articles').html(html_value);
             $('#articles').css('visibility','visible');
         }
+
+
+        function rech_associe()
+        {
+            document.getElementById("prop").innerHTML="";
+            var saisie = $('#search-text').val();
+            var nbCar = saisie.length;
+
+            if(nbCar>0){
+                $.ajax({
+                    url: '/words',
+                    method: "GET",
+                    data: {
+                        word: saisie,
+                        lang: $('select[name=language]').val()
+                    },
+                    success: function(data){
+                        affiche(data);
+                        console.log(data);
+                    },
+                    error: function(data){
+                        console.log(data.responseText)
+                    }		
+                })
+            }else{
+                document.getElementById("prop").style.visibility="hidden";
+            }
+            return ;
+        }
+
+        //afficher les recherches associées
+        function affiche(chaine){
+            if(chaine!=[]){
+                document.getElementById("prop").style.visibility="visible";
+                let html =''
+                for(let i=0;i<chaine.length;i++){
+                    html += "<div class='flux' onClick='choix(\"" + chaine[i] + "\")'>"+chaine[i] + "</div>"; 
+                }
+                $('#prop').html(html);
+            }
+            if(chaine.length==0){
+                document.getElementById("prop").style.visibility="hidden";
+            }
+        }
+
+        //valider un choix proposé
+		function choix(valeur){
+			document.getElementById("search-text").value = valeur;
+			document.getElementById("prop").style.visibility = "hidden";
+			document.getElementById("search-text").style.borderRadius = "20px 0px 0px 20px";
+		}
+
+        $('#search-text').keypress(function(e){
+            console.log(e.key);
+            if(e.key == 'Escape'){
+                $('#prop').css('visibility','hidden');
+            }
+        });
+
+        $('.page-item').click(function (){
+            switch($(this).data('offset')){
+                case -1:
+                    console.log('previous');
+                    page_count -=1;
+                    if(page_count<1){
+                        requestResultPage(0);
+                        page_count = 1;
+                    }else{
+                        requestResultPage(page_count*page_size);
+                    }
+                    break;
+                case 0:
+                    console.log('next');
+                    requestResultPage(result_count+(page_count*page_size));
+                    page_count +=1;
+                    break;
+                default:
+                    page_count = parseInt($(this).data('offset'))-1;
+                    requestResultPage(page_count*page_size);
+            }
+        });
 	</script>
 </body>
 

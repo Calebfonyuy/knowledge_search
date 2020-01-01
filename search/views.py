@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Search, Scrapper, Searcher, SearchManager
+from .models import Search
+from .helpers import Scrapper, Searcher, SearchManager
 from knowledge_search import parameters
 from django.http import JsonResponse, HttpResponse
 import threading
@@ -41,13 +42,14 @@ def search(request):
 def paginate(request):
     word = request.GET['word']
     lang = request.GET['lang']
-    size = request.GET['size']#Get the page index
+    size = int(request.GET['size']) #Get the page index
     manager = SearchManager(word, lang)
     result_size = manager.result_size()
-    if result_size > int(size) and (result_size- int(size))>=10:
+    if result_size > int(size) and (result_size- size)>=10:
         return JsonResponse(list(manager.get_results_with_offset(size)),safe=False)#Return JSON object of results
     if not manager.search.extended_search:
         manager.execute_extended_search()
         return JsonResponse(list(manager.get_results_with_offset(size)),safe=False)#Return JSON object of results
     else:
-        return JsonResponse(list(manager.unsaved_results()),safe=False) # Return every other unsaved result
+        saved = list(manager.get_results_with_offset(size))
+        return JsonResponse(saved.append(list(manager.unsaved_results())),safe=False) # Return every other unsaved result
