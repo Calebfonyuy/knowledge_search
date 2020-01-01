@@ -11,7 +11,7 @@
 	
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/style_index.css' %}">
-	<link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/all.min.css' %}">
 </head>
 
 <body>
@@ -20,6 +20,10 @@
 		<div class="row">
 		  <div class="col-lg-9 col-md-5 col-sm-5 col-xs-5">
 			<img src="{% static 'images\Capture.PNG' %}" class="img-responsive" width="50px" id="Logo">
+			<br>
+			<button class="btn btn-outline-primary" id="fond_ecran" onclick="changer()" >
+				<span class="text-primary fa fa-edit"></span>
+			</button>
 		  </div>
 		  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 m-auto p-auto">
 				<select class="w-100 btn btn-primary" name="language" id="lang_select">
@@ -32,12 +36,10 @@
 		<div class="col-12">
 		  <hr>
 			<div>
-				<button class="btn btn-outline-primary" id="fond_ecran" onclick="changer()" >
-					<span class="text-primary fa fa-edit"></span>
-					
-				</button>
-				
-				<h2 class="text-primary" id="nom">KnowledgeSearch</h2>
+				<h1 class="text-center text-primary" id="nom">KnowledgeSearch</h1>
+				<div class="text-center">
+					<label class="text-light font-italic font-weight-bold">Getting Quality Educative Content</label>
+				</div>
 				<form class="form m-0"  action="/search" method="get" id="soumet" onsubmit="return updateSearchLanguage()">
 					<input type="hidden" name="source" value="home">
 					<input type="hidden" name="lang" value="" id="lang_sub">
@@ -52,7 +54,7 @@
 								</div>
 								<div class=" input-group-append">
 									<button class="btn btn-outline-primary" type="submit" id="rond">
-										<i class="fa fa-align-justify" ></i>
+										<i class="fa fa-search" ></i>
 									</button>
 								</div>
 								<div class = "col-11" id="prop"></div>
@@ -60,10 +62,8 @@
 						</div>
 					</div>
 				</form>
-				<div class = "row" id="pastSearchs">
-					<div class="col-lg-8 col-md-8 m-auto">
-						
-					</div>
+				<div class = "col-lg-7 col-md-7 m-auto pr-5 pl-5 row" id="pastSearchs">
+					
 				</div>
 			</div>
 	</div>
@@ -76,7 +76,7 @@
 
 	<script type="text/javascript">
 		//méthodes des 9 recherches les plus fréquentes
-		$.document.ready(function(){
+		$(document).ready(function(){
 			frequently();
 		});
 
@@ -97,12 +97,10 @@
 
 		function formatResults(results) {
 			let html_value = '';
-			for (i=0; i<results.items.length; i++) {
-				const result = results.items[i];
+			for (i=0; i<results.length; i++) {
+				const result = results[i];
 				const lien = "/search?source=home&lang="+result.lang+"&word="+result.word;
-				html_value += '<a href="'+lien+'" class="quick-box p-5" id="pastSearch" >'+
-					'<h6 class="text-secondary" id="pastSearch0">'+result.word+
-				'</h6></a>'
+				html_value += '<a href="'+lien+'" class="quick-box p-3" id="pastSearch" >'+result.word+'</a>';
 			}
 			$('#pastSearchs').html(html_value);
         }
@@ -115,17 +113,7 @@
 			var v = 'static/css/'+tab[num];
 			document.getElementsByTagName("body")[0].style.backgroundImage = "url("+v+")";
 		}
-
-		function getRandomInt(min, max) {
-			min = Math.ceil(min);
-			max = Math.floor(max);
-			return Math.floor(Math.random() * (max - min)) + min;
-		}
 		
-		//saisie prédictive
-		function controler_saisie(){
-			var chaine = rech_associe();
-		}
 
 		//valider un choix proposé
 		function choix(valeur){

@@ -84,7 +84,7 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'NAME': 'knowledge_search',
         'USER': 'root',
-        'PASSWORD': 'djoudken'
+        'PASSWORD': 'kitiwum2@BUI'
     }
 }
 

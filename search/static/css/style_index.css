@@ -74,24 +74,6 @@ h2{
 #soumet{
   width: 100%;
 }
-#pastSearch{
-   background-color: #eeeeee;
-   border:1px solid #9FC6FF;
-   padding:5px;
-   /*width: 100%;*/
-   height: 10px;
-   text-align: center;
-   
-   /*arrondir les coins en haut à gauche et en bas à droite*/
-   -moz-border-radius:10px 0;
-   -webkit-border-radius:10px 0;
-   border-radius:10px 10px;
-}
-#pastSearch0{
- margin: auto;
- /*vertical-align: auto;
- display: table-cell;*/
-}
 .article {
   margin: 3px;
 }
@@ -130,16 +112,26 @@ a:hover{
 }
 
 .quick-box{
-  height: 150px;
+  background-color: #CCC;
+  color: black;
   width: 30%;
-  margin: 10px !important;
   float: left;
-  text-overflow: ellipsis;
+  margin: 10px;
+  border-radius: 10px;
+  text-align: center;
+  text-overflow: break-word;
+}
+
+.quick-box:hover {
+  color: black;
+  font-size: 1.2em;
+  text-decoration: underline;
 }
 
 #ok{
   padding:3em 10px 1em 0;
 }
+
 #search-btn{
   width: 40px; 
   padding: 3px;
@@ -160,16 +152,16 @@ a:hover{
   height: 100%;
 }
 
-@media (min-width: 768px && max-width: 1050px ) {
+@media (min-width: 768px) and (max-width: 1050px ) {
   .quick-box{
-	width: 50% !important;
-	margin: auto !important;
+    width: 50% !important;
+    margin: auto !important;
   }
 }
 
 @media (max-width: 767px ) {
   .quick-box{
-	width: 100% !important;
+	  width: 100% !important;
   }
 }
 
@@ -260,3 +252,7 @@ svg#rocket-smoke {
   z-index: -10;
 }
 
+
+.flux:hover{
+  background-color: #c0c0c09d;
+}
