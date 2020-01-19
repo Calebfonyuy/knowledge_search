@@ -4,6 +4,7 @@ from knowledge_search import parameters
 from concurrent import futures
 from bs4 import BeautifulSoup
 from .models import Search, Result, BlockedSite
+from .ontologie import get_complete_content
 import requests
 import html2text
 import json
@@ -68,6 +69,7 @@ class Scrapper:
     def fit(self, term):
         self.__term = term
         self.__count = -1
+        self.__page = None
         self.__scrapper = html2text.HTML2Text()
         self.__scrapper.ignore_images = True
         self.__scrapper.ignore_emphasis = True
@@ -83,11 +85,19 @@ class Scrapper:
             return False
         return True
     
+    #Get valid snippet for page
+    def get_page_snippet(self, original):
+        snippets = get_complete_content(self.__page.text, original)
+        if len(snippets)>0:
+            return snippets.pop()
+        else:
+            return original
+    
     #Web scrapping function
     def __analyzeContent(self, url):
         try:
-            page = requests.get(url) #Request html page
-            text = self.__scrapper.handle(page.text).replace('\n', ' ') #clear tags and new lines
+            self.__page = requests.get(url) #Request html page
+            text = self.__scrapper.handle(self.__page.text).replace('\n', ' ') #clear tags and new lines
             self.__count = text.lower().count(self.__term) #count number of occurences of search term on page
         except Exception as exp:
             self.__count = -1
@@ -190,7 +200,7 @@ class SearchManager:
                 item.search_word = self.search
                 item.title = result['title']
                 item.url = result['link']
-                item.snippet = result['snippet'].replace('\n',' ')
+                item.snippet = scrapper.get_page_snippet(result['snippet'].replace('\n',' '))
                 item.nb_match = scrapper.getCount()
                 item.save()
     

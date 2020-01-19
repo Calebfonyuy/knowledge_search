@@ -26,6 +26,7 @@ class Migration(migrations.Migration):
                 ('search_term', models.CharField(max_length=255)),
                 ('lang', models.CharField(max_length=10)),
                 ('frequency', models.IntegerField()),
+                ('extended_search', models.IntegerField())
             ],
         ),
         migrations.CreateModel(
