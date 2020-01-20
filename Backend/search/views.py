@@ -1,14 +1,13 @@
-from django.shortcuts import render, redirect
 from .models import Search
-from .helpers import Scrapper, Searcher, SearchManager
-from knowledge_search import parameters
+from .helpers import create_search
+from django.db import connection
 from django.http import JsonResponse, HttpResponse
-import threading
-import json
 
 #Application Entry point. It simply returns the home page.
 def index(request):
-    return render(request,'acceuil.html')
+    resp = HttpResponse("Greetings from knowledge_search....")
+    return resp
+
 
 #Most frequently searched words
 def frequent(request):
@@ -18,38 +17,41 @@ def frequent(request):
         results.append(search.to_json());
     return JsonResponse(results, safe=False)
 
-#This function manages incoming searches
-def search(request):
-    #Get all search parameters
-    word = request.GET['word']
-    lang = request.GET['lang']
-    source = request.GET['source']
-    #Check request source as search results are not being returned to home page directly.
-    if source == parameters.HOME_PAGE:
-        context = {'search_term': word, 'lang': lang}
-        return render(request, 'results.html', context) #render result page
-    #Prepare and render search results
-    manager = SearchManager(word, lang)
-    if manager.result_size()<10:
-        manager.executeSearch() #Search for new results for the search term
-    else:
-        if not manager.search.extended_search: #Exhaust the possible number of searches available for a free cgse search
-            thread = threading.Thread(manager.execute_extended_search()) # Create a thread to run in background on server
-            thread.start()
-    return JsonResponse(list(manager.get_results()), safe=False) #Return results as JSON object
 
-#Handling of pagination requests
-def paginate(request):
+#This function manages incoming searches requesting filtered results
+def filtered_search(request):
+    search = create_search(request)
+    return JsonResponse(list(search.get_filtered_results()), safe=False) #Return results as JSON object
+
+
+def raw_search(request):
+    search = create_search(request, flag=False)
+    return JsonResponse(list(search.get_raw_results()), safe=False) #Return results as JSON object
+
+
+def scrapped_search(request):
+    search = create_search(request, flag=False)
+    return JsonResponse(list(search.get_scrapped_results()), safe=False) #Return results as JSON object
+
+def mixed_search(request):
+    search = create_search(request)
+    result = dict()
+    result['raw'] = search.get_raw_results()
+    result['filtered'] = search.get_filtered_results()
+    return JsonResponse(list(search.get_raw_results()), safe=False)
+
+
+'''
+This function receives an incoming request for word proposals and returns the 
+set of words that start with the word sent as a parameter.
+'''
+def word_proposal(request):
+    cursor = connection.cursor()
     word = request.GET['word']
     lang = request.GET['lang']
-    size = int(request.GET['size']) #Get the page index
-    manager = SearchManager(word, lang)
-    result_size = manager.result_size()
-    if result_size > int(size) and (result_size- size)>=10:
-        return JsonResponse(list(manager.get_results_with_offset(size)),safe=False)#Return JSON object of results
-    if not manager.search.extended_search:
-        manager.execute_extended_search()
-        return JsonResponse(list(manager.get_results_with_offset(size)),safe=False)#Return JSON object of results
-    else:
-        saved = list(manager.get_results_with_offset(size))
-        return JsonResponse(saved.append(list(manager.unsaved_results())),safe=False) # Return every other unsaved result
+    cursor.execute("select search_term from search_search where search_term like '"+word+"%' and lang='"+lang+"'")
+    results = cursor.fetchall()
+    response = []
+    for result in results:
+        response +=list(result)
+    return JsonResponse(response, safe=False) #Return results as a JSON object
