@@ -91,8 +91,6 @@ class Search(models.Model):
         self.clean_results = []
         pool = futures.ThreadPoolExecutor(max_workers=12)
         pool.map(self.__scrape_site, self.results)
-        pool.shutdown()
-        pool.await
 
     def __scrape_site(self, result):
         scrapper = html2text.HTML2Text()
