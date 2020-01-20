@@ -20,9 +20,10 @@ from result import views as rviews
 
 urlpatterns = [
     path('', sviews.index, name="index"),
-    path('search', sviews.search, name="search"), #Search url
+    path('filtered_search', sviews.filtered_search, name="filtered_search"), #Search url
+    path('raw_search', sviews.raw_search, name="raw_search"), #Search url
+    path('scrapped_search', sviews.scrapped_search, name="raw_search"), #Search url
     path('frequent', sviews.frequent, name="frequent"), #Frequent searches
-    path('words', rviews.word_proposal, name="word_proposal"), #Word request url
-    path('next_page', sviews.paginate, name="result_page"), #Pagination requests
+    path('word_proposal', sviews.word_proposal, name="word_proposal"), #Word request url
     path('admin/', admin.site.urls), #Site administration
 ]

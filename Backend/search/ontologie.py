@@ -15,12 +15,11 @@ def clean_text(request_text):
     
     return clean_txt
 
+
 def get_complete_content(page_text, target_text):
-    clean_txt = clean_text(page_text)
     # Create soup object
     soup = BeautifulSoup(page_text, 'html.parser')
     
-    # Eliminate trailing suspension points
     last_index = target_text.rfind('...')
     if last_index == len(target_text)-3:
         target_text = target_text[0:last_index]
@@ -29,6 +28,7 @@ def get_complete_content(page_text, target_text):
 
     # Check if text is made up of several portions then break it into several
     # strings
+    clean_txt = clean_text(page_text)
     if clean_txt.find(target_text) < 0:
         text_portions = target_text.split('...')
     
@@ -55,5 +55,8 @@ def get_complete_content(page_text, target_text):
 
         if found:
             found_portions.add(found_item.strip())
-        
-    return found_portions
+
+    if len(found_portions)>0:
+        return found_portions
+    else:
+        return target_text
