@@ -1,1 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+
+body{
+	background-image: linear-gradient(to right, rgba(161, 196, 253, 0.5), rgba(194, 233, 251, 0.5));
+}

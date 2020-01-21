@@ -1,0 +1,12 @@
+.proposition{
+	height: 100px;
+	text-align: center;
+	border: 1px #e0e0e0 solid;
+	border-radius: 10%;
+	vertical-align: middle;
+	background-color: #e5e5e5;
+}
+
+.proposition li{
+	list-style-type: none;
+}

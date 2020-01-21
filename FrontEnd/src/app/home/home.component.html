@@ -1,0 +1,39 @@
+<div class="container-fluid">
+	<div class="col-lg-8 col-md-10 m-auto">
+		<div class="text-center m-auto">
+			<h1 class="text-center text-primary" id="nom">KnowledgeSearch</h1>
+			<div class="text-center">
+				<label class="font-italic font-weight-bold">Giving You Quality Educative Content</label>
+			</div>
+		</div>
+		<div class="">
+			<form class="form" action="{{ submit_link }}" method="get">
+				<div class="m-4 row">
+					<div class="col-lg-4 col-md-6 m-auto input-group">
+						<input type="radio" name="type" id="pedagog" value="1" class="mr-1" (change)="changeLink($event)" checked>
+						<label for="pedagog" class="font-italic">Contenu Pedagogique</label>
+					</div>
+					<div class="col-lg-4 col-md-6 m-auto input-group">
+						<input type="radio" name="type" id="general" value="2" class="mr-1" (change)="changeLink($event)">
+						<label for="general" class="font-italic">Contenu G&eacute;n&eacute;ral</label>
+					</div>
+				</div>
+				<div class="mt-4 row">
+					<div class="col-lg-9 col-md-8">
+						<input type="text" name="search" class="form-control" autocomplete="off" required>
+					</div>
+					<div class="col-lg-3 col-md-4 m-auto">
+						<button type="submit" name="submit" class="btn btn-primary w-100">Rechercher</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="border mt-5">
+			<ul class="m-auto row">
+				<div class="col-lg-3 col-md-4 m-3 pt-4 proposition" *ngFor="let word of propositions">
+					<li class="font-weight-bold">{{ word.word }}</li>
+				</div>
+			</ul>
+		</div>
+	</div>
+</div>

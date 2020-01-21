@@ -73,12 +73,17 @@ class Search(models.Model):
             blocked = cursor.execute(query) > 0 #Verify that site is not from a blocked domain
             if blocked:
                 continue
-            page = requests.get(result['link'])
+            snippet = result['snippet']
+            try:
+                page = requests.get(result['link'], verify=False, timeout=3)
+                ontologie.get_complete_content(page.text, result['snippet'].replace('\n',''))
+            except:
+                pass
             item = Result()
             item.search_word = self
             item.title = result['title']
             item.url = result['link']
-            item.snippet = ontologie.get_complete_content(page.text, result['snippet'].replace('\n',''))
+            item.snippet = snippet
             self.scraped_results.append(item.toJson())
         return self.scraped_results
 

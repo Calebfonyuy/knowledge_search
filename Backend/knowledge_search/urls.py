@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from search import views as sviews
-from result import views as rviews
 
 urlpatterns = [
     path('', sviews.index, name="index"),
