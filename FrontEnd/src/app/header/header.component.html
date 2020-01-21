@@ -1,0 +1,27 @@
+<nav class="navbar navbar-light bg-light fixed-top m-0">
+	<div class="navbar-brand">
+		<img src="assets/logo.png" alt="" height="40" class="d-none d-md-inline d-sm-none">
+		<span class="font-weight-bold">
+			{{ title }}
+		</span>
+	</div>
+	<div class="navbar-nav">
+		<ul class="nav">
+			<li class="nav-item mt-1 btn-link">
+				<a routerLink="/educative_search" routerLinkActive="active">&Eacute;catif |</a>
+			</li>
+			<li class="nav-item m-1 btn-link">
+				<a routerLink="/pure_google_results" routerLinkActive="active">R&eacute;sultats Google |</a>
+			</li>
+			<li class="nav-item m-1 btn-link">
+				<a routerLink="/scrap_no_filter" routerLinkActive="active">Only Web Scrapped</a>
+			</li>
+			<li class="nav-item ml-auto mr-1 mt-1 mb-1 ">
+				<select class="btn btn-primary" name="language" id="lang_select" (change)="updateLanguage($event)">
+					  <option value="lang_en">EN</option>
+					  <option value="lang_fr">FR</option>
+				</select>
+			</li>
+		</ul>
+	</div>
+</nav>

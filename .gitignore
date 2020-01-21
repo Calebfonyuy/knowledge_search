@@ -1,1 +1,4 @@
 node_modules/
+Backend/knowledge_search/__pycache__/
+Backend/search/__pycache__/
+Backend/result/__pycache__/

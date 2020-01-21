@@ -1,0 +1,35 @@
+.result-title{
+    padding-bottom: 10px;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+.result-link{
+    padding-bottom: 5px;
+	font-weight: lighter;
+	color: #00F;
+	overflow-wrap: break-word;
+}
+.article {
+    margin: 3px;
+    padding: 2px;
+    border: 1px solid;
+    border-radius: 10px;
+    box-shadow: 3px 3px #e2ebf0;
+    background-color: #e6eced;
+    padding: 10px;
+}
+
+.article:hover{
+	transform: scale(1.04);
+}
+
+.article .result-link:hover{
+    text-decoration: underline;
+}
+
+a {
+	color: black;
+}
+a:hover{
+  text-decoration: none;
+}
