@@ -12,7 +12,7 @@ import { FormControl } from '@angular/forms';
 })
 export class SearchComponent implements OnInit {
 	private propositions:string[] = [];
-	private pages:number[] = [1,2,3,4,5,6,7,8,9,10];
+	private pages:number[] = [1,2,3,4,5,6,7,8,9];
 	private large_search:boolean = true;
 	@Input('type')
 	private search_type:number;
@@ -25,14 +25,19 @@ export class SearchComponent implements OnInit {
   constructor(private route:ActivatedRoute, private http: HttpClient) { }
 
   ngOnInit() {
-	  this.search_type = this.route.data._value['type'];
-	  var values = this.route.queryParams._value;
-	  this.search_term = values.search;
+	  this.route.data.subscribe((data)=> {this.search_type = data['type']});
+	  this.route.queryParams.subscribe((data)=>{this.search_term = data['search']});
 	  console.log("search type: ", this.search_type);
+	  console.log("search term: ", this.search_term);
 	  console.log(HeaderComponent.language);
 	  this.http.get(AppComponent.SERVER_URL+"frequent", {responseType: 'json'}).subscribe((data:any)=>{
   		this.propositions= data;
-  	});
+  		});
+	  if(this.search_term){
+		  if(this.search_term!="undefined"){
+			  this.performSearch(1);
+		  }
+	  }
   }
 
 	private performSearch(page){
@@ -72,5 +77,11 @@ export class SearchComponent implements OnInit {
 
 	private nextPage(){
 		this.performSearch(this.current_page+1);
+	}
+
+	private searchShortCut(term:string, language:string){
+		this.search_term = term;
+		HeaderComponent.language = language;
+		this.performSearch(1);
 	}
 }

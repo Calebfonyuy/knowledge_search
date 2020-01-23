@@ -23,7 +23,7 @@
 		</form>
 		<div class="mt-3 mr-1 ml-1" *ngIf="large_search">
 			<ul class="row">
-				<div class="col-lg-3 col-md-4 m-1 pt-4 proposition" *ngFor="let word of propositions">
+				<div class="col-lg-3 col-md-4 m-1 pt-4 proposition" *ngFor="let word of propositions" (click)="searchShortCut(word.word, word.lang)">
 					<li class="font-weight-bold">{{ word.word }}</li>
 				</div>
 			</ul>
