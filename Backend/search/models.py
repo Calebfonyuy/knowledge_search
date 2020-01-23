@@ -8,6 +8,7 @@ import requests
 import html2text
 import json
 import re
+import multiprocessing as mp
 
 #Model for representation of blocked or restricted domains
 class BlockedSite(models.Model):
@@ -74,14 +75,17 @@ class Search(models.Model):
             if blocked:
                 continue
             snippet = result['snippet']
+            title = result['title']
             try:
                 page = requests.get(result['link'], verify=False, timeout=3)
-                ontologie.get_complete_content(page.text, result['snippet'].replace('\n',''))
+                snippet = ontologie.get_complete_content(page.text, result['snippet'].replace('\n',''))
+                soup = BeautifulSoup(page.text, 'html.parser')
+                title = ontologie.clean_text(soup.title)
             except:
                 pass
             item = Result()
             item.search_word = self
-            item.title = result['title']
+            item.title = title
             item.url = result['link']
             item.snippet = snippet
             self.scraped_results.append(item.toJson())
@@ -93,9 +97,12 @@ class Search(models.Model):
         return self.clean_results
 
     def __filter_results(self):
-        self.clean_results = []
+        if not hasattr(self, 'clean_results'):
+            self.clean_results = []
         pool = futures.ThreadPoolExecutor(max_workers=12)
-        pool.map(self.__scrape_site, self.results)
+        scrappes = [pool.submit(self.__scrape_site, result) for result in self.results]
+        futures.wait(scrappes, timeout=120, return_when=futures.ALL_COMPLETED)
+        return self.clean_results
 
     def __scrape_site(self, result):
         scrapper = html2text.HTML2Text()
@@ -110,18 +117,19 @@ class Search(models.Model):
             if blocked:
                 return
             page = requests.get(result['link']) #Request html page
+            soup = BeautifulSoup(page.text, 'html.parser')
             text = ontologie.clean_text(page.text) #clear tags and new lines
-            count = text.lower().count(self.__term) #count number of occurences of search term on page
+            count = text.lower().count(self.search_term) #count number of occurences of search term on page
             if count > parameters.THRESHOLD: #Call scrapping method to determine if the page is valid
                 item = Result() #Create and save new result item for valid result
                 item.search_word = self
-                item.title = result['title']
+                item.title = ontologie.clean_text(soup.title)
                 item.url = result['link']
                 item.snippet = ontologie.get_complete_content(page.text, result['snippet'])
                 item.nb_match = count
                 self.clean_results.append(item.toJson())
         except Exception as exp:
-            raise Exception("Error Loading url")
+            raise Exception("Error Loading url: "+result['link'])
 
 
 

@@ -21,6 +21,10 @@ def frequent(request):
 #This function manages incoming searches requesting filtered results
 def filtered_search(request):
     search = create_search(request)
+    search.page = int(request.GET['page'])
+    while len(search.get_filtered_results())<10 and search.page<9:
+        search.page += 1
+        search.perform_google_search((search.page*10)+1, True)
     return JsonResponse(list(search.get_filtered_results()), safe=False) #Return results as JSON object
 
 
